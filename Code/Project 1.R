@@ -1,28 +1,10 @@
 setwd("~/Documents/GitHub/RProjectsVL/")
 getwd()
 
-# Remove Previous Data
+# Remove previous data
 rm(list=ls(all=TRUE))
 
-
-pkgs <- c("sp","maps","maptools", "ggthemes", "caret",
-          "prophet", "broom","keras","lime","tidyquant",
-          "recipes","yardstick","corrr","rsample",
-          "reshape2", "ggplot2","lazyeval","corrplot",
-          "purrr", "RColorBrewer", "scales",
-          "data.table", "randomForest","e1071", "ellipse", "RWeka",
-          "gridExtra", "RColorBrewer","plyr",
-          "grid","tibble","tidyr","stringr",
-          "ggfortify","tibble","readr","dplyr",
-          "ggrepel","scales","forcats","lubridate") 
-for (pkg in pkgs) {
-  if (! (pkg %in% rownames(installed.packages()))) { install.packages(pkg) }
-  require(pkg, character.only = TRUE)
-}
-rm(pkgs, pkg)
-
-
-# Loading Packages
+# Loading packages
 pkgs <- c("scales","car","RColorBrewer",
           "scatterplot3d","plot3D","lattice",
           "dplyr") 
@@ -30,11 +12,12 @@ for (pkg in pkgs) {
   if (! (pkg %in% rownames(installed.packages()))) { install.packages(pkg) }
   require(pkg, character.only = TRUE)
 }
+
+# Remove pkgs and pkg
 rm(pkgs, pkg)
 
 ########## Function obtained from the internet https://github.com/ChrKoenig/R_marginal_plot/blob/master/marginal_plot.R
 ####
-
 marginal_plot = function(x, y, group = NULL, data = NULL, lm_formula = y ~ x, bw = "nrd0", alpha = 1, plot_legend = T, ...){
   require(scales)
   ###############
@@ -154,19 +137,20 @@ marginal_plot = function(x, y, group = NULL, data = NULL, lm_formula = y ~ x, bw
 # Load Bank Dataset
 df.1<-read.table("~/Documents/GitHub/RProjectsVL/Data/P1-4.DAT",
                  col.names = c("Sales","Profits","Assets"))
-
+# First plot
 marginal_plot(x=df.1$Sales,y=df.1$Profits,
               xlab="Sales",ylab="Profits")
-
 # This plot shows that there is positive correlation between Sales and Profits with
 # somewhat of a linear relationship, but it can also be said that due to the small sample size,
 # this could be misleading.
 
+# Second plot
 marginal_plot(x=df.1$Profits,y=df.1$Assets,
               xlab="Profits",ylab="Assets")
 
 # In the second plot, we actually see negative correlation between Profits and Assets.
 
+# Third plot
 marginal_plot(x=df.1$Sales,y=df.1$Assets,
               xlab="Sales",ylab="Assets")
 
@@ -177,6 +161,7 @@ df.2<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-7.DAT",
                  col.names = c("Symptoms","Activity","Sleep","Food",
                                "Appetite","Skin"))
 
+# Marginal Plot for Amount of Activity vs Amount of Sleep
 marginal_plot(x=df.2$Activity,y=df.2$Sleep,xlab="Amount of Activity",ylab="Amount of Sleep")
 
 # For this plot, we can see that there is positive correlation between the amount of activity and the 
@@ -186,20 +171,20 @@ marginal_plot(x=df.2$Activity,y=df.2$Sleep,xlab="Amount of Activity",ylab="Amoun
 df.3<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-9.dat",header = FALSE,
                  col.names = c("Country", "s100", "s200", "s400","m800","m1500","m3000","Marathon"))
 
-# Convert Country to Character and use as Row Name
+# Convert country to character and use as row name
 df.3$Country<-as.character(df.3$Country)
 df.a= df.3[, -1]
 
-X<-apply(df.a,2,mean)
 # Mean
+X<-apply(df.a,2,mean)
 X
 
-S<-var(df.a)
 # Variance 
+S<-var(df.a)
 S
 
-R<-cor(df.a)
 # Correlation
+R<-cor(df.a)
 R
 
 # The results show that there is positive correlation between the groups with the largest
@@ -216,16 +201,16 @@ df.b[,5]<-1500/df.b[, 5]
 df.b[,6]<-3000/df.b[, 6]
 df.b[,7]<-42195/df.b[, 7]
 
-X2<-apply(df.b,2,mean)
 # Mean
+X2<-apply(df.b,2,mean)
 X2
 
-S2<-var(df.b)
 # Variance
+S2<-var(df.b)
 S2
 
-R2<-cor(df.b)
 # Correlation
+R2<-cor(df.b)
 R2
 
 # The results for this problem are similar to our previous question. We see positive
@@ -237,7 +222,7 @@ df.4<-read.table("~/Documents/GitHub/RProjectsVL/Data/T11-4.DAT",header = FALSE,
                                "X3CurrentAssets/CurrentLiabilites","X4CurrentAssets/NetSales",
                                "Population"))
 
-# Scatterplot3D Plot
+# Scatter 3D plot
 scatterplot3d(x=df.4$X3CurrentAssets.CurrentLiabilites,y=df.4$X1CashFlow.TotalDebt,z=df.4$X2NetIncome.TotalAssets,xlab = "CurrentAssets/CurrentLiabilites",
               ylab="CashFlow/TotalDebt",zlab="NetIncome/TotalAssets",color=par("col"),main="3D Scatterplot X2 X3 X1")
 
@@ -253,7 +238,7 @@ df.5<-data.frame(a=df.4$X3CurrentAssets.CurrentLiabilites,b=df.4$X1CashFlow.Tota
 df.5$d<-as.numeric(df.5$d)
 df.5$e<-as.factor(df.5$e)
 
-# A Second Scatterplot3D showing Bankruptcy and NonBankruptcy
+# Second Scatter 3D plot showing Bankruptcy and NonBankruptcy
 df.plot<-scatterplot3d(df.5[df.5$e=="1",],box=FALSE, pch=16,xlab="NetIncome/TotalAssets", ylab="CurrentAssets/CurrentLiabilites",zlab="CashFlow/TotalDebt",zlim=c(-0.5,1),
                        type="h", main="3D Scatterplot X2 X3 X1",
                        xlim = c(0,4),ylim = c(-0.5,1),highlight.3d=TRUE)
@@ -275,7 +260,7 @@ stars(df.6[,4:6],locations=c(0,0),key.loc=c(0,0),main="Group 2")
 stars(df.6[,5:8],locations=c(0,0),key.loc=c(0,0),main="Group 3")
 stars(df.6[,2:5],locations=c(0,0),key.loc=c(0,0),main="Group 4")
 
-# Reset Plot Parameters
+# Reset plot parameters
 dev.off()
 
 # Load the National Park Dataset Dataset
@@ -285,7 +270,7 @@ df.7<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-11.dat",header = FALSE,
 # Add a new variable for the parks
 df.7$Park<-factor(rep(1:length(df.7$Size)))
 
-# Plot Data
+# plot data
 plot(x=df.7$Visitors,y=df.7$Size, main="Scatter Plot of X and Y",xlab="Number of visitors(in millions)",ylab="Size (in Acres)")
 abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
 
@@ -305,11 +290,12 @@ cor(x=df.7$Visitors,y=df.7$Size)
 # Remove The Great Smokey National Park.
 df.7<-df.7[-7,]
 
-# Re-Plot Data
-plot(x=df.7$Visitors,y=df.7$Size, main="Re-Scatter Plot of X and Y",xlab="Number of visitors(in millions)",ylab="Size (in Acres)")
+# Update scatter plot
+plot(x=df.7$Visitors,y=df.7$Size, main="Updated Scatter Plot of X and Y",xlab="Number of visitors(in millions)",ylab="Size (in Acres)")
 abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
 
 # It definitly looks better so now lets also rerun the cor().
 cor(x=df.7$Visitors,y=df.7$Size)
 
 # The correlation coefficient improves to 0.3907829.
+
