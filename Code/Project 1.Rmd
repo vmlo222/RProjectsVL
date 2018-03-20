@@ -1,5 +1,5 @@
 ---
-title: "Project 1"
+title: "Project 1-Multivariate Methods"
 author: "Vincent Locke"
 date: "3/19/2018"
 output: html_document
@@ -197,25 +197,25 @@ summary(df.3)
 
 Lets convert the country variable to character format and use this as 
 our row name.
-```{r }
+```{r,echo=FALSE }
 df.3$Country<-as.character(df.3$Country)
 df.a= df.3[, -1]
 ```
 
 Mean of the variables
-```{r }
+```{r,echo=FALSE }
 X<-apply(df.a,2,mean)
 X
 ```
 
 Variance of the variables
-```{r }
+```{r,echo=FALSE}
 S<-var(df.a)
 S
 ```
 
 Correlation of the variables
-```{r }
+```{r,echo=FALSE}
 R<-cor(df.a)
 R
 ```
@@ -223,7 +223,7 @@ R
 The results show that there is positive correlation between the groups with the largest coming from races that are similar.
 
 Lets convert the distance from Meters to Meters Per Second
-```{r }
+```{r,echo=FALSE }
 df.b<-df.a
 df.b[,1]<-100/df.b[, 1]
 df.b[,2]<-200/df.b[, 2]
@@ -236,19 +236,19 @@ df.b[,7]<-42195/df.b[, 7]
 ```
 
 Mean of the variables
-```{r }
+```{r,echo=FALSE }
 X2<-apply(df.b,2,mean)
 X2
 ```
 
 Variance of the variables
-```{r }
+```{r,echo=FALSE }
 S2<-var(df.b)
 S2
 ```
 
 Correlation of the variables
-```{r }
+```{r,echo=FALSE }
 R2<-cor(df.b)
 R2
 ```
@@ -269,18 +269,17 @@ scatterplot3d(x=df.4$X3CurrentAssets.CurrentLiabilites,y=df.4$X1CashFlow.TotalDe
 
 The 3D scatter plot suggests there could be some outliers towards the top right and the plot also looks like a cigar but bent towards the top, which is a good sign.
 
-Now lets rearrange the Bankruptcy Dataset
+Now lets rearrange the Bankruptcy Dataset and change the d variable to numeric and the e variable to a factor
 ```{r rearranged bankruptcy data, echo=FALSE}
 df.5<-data.frame(a=df.4$X3CurrentAssets.CurrentLiabilites,b=df.4$X1CashFlow.TotalDebt,c=df.4$X2NetIncome.TotalAssets,d=df.4$X4CurrentAssets.NetSales,e=df.4$Population)
 ```
 
-Change the d variable to numeric and the e variable to a factor
-```{r }
+```{r,echo=FALSE}
 df.5$d<-as.numeric(df.5$d)
 df.5$e<-as.factor(df.5$e)
 ```
 
-Now, lets create a second 3D scatter plot showing bankruptcy and nonbankruptcy
+Lets create a second 3D scatter plot showing bankruptcy and nonbankruptcy
 ```{r second scatterplot3d, echo=FALSE}
 df.plot<-scatterplot3d(df.5[df.5$e=="1",],box=FALSE, pch=16,xlab="NetIncome/TotalAssets", ylab="CurrentAssets/CurrentLiabilites",zlab="CashFlow/TotalDebt",zlim=c(-0.5,1),
                        type="h", main="3D Scatterplot X2 X3 X1",
@@ -306,8 +305,7 @@ stars(df.6[,5:8],locations=c(0,0),key.loc=c(0,0),main="Group 3")
 stars(df.6[,2:5],locations=c(0,0),key.loc=c(0,0),main="Group 4")
 ```
 
-Reset the plot parameters back to the default settings
-```{r }
+```{r,echo=FALSE }
 dev.off()
 ```
 
@@ -348,14 +346,14 @@ abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
 If we take a look at the plot, we can clearly see that there is an outlier that is effecting model. 
 
 To figure our which park is the outlier, lets take a look at the data.
-```{r }
+```{r,echo=FALSE }
 head(df.7,n=15)
 ```
 
 Comparing the dataset to the scatter plot, we see that park 7 or The Great Smokey National Park is the outlier.
 
 Before we do anything, lets check the correlation between Visitors and Size.
-```{r }
+```{r,echo=FALSE }
 cor(x=df.7$Visitors,y=df.7$Size)
 ```
 
@@ -373,7 +371,7 @@ abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
 ```
 
 It definitly improves the scatter plot so now lets also check correlation between the two again.
-```{r }
+```{r,echo=FALSE }
 cor(x=df.7$Visitors,y=df.7$Size)
 ```
 
