@@ -1,10 +1,15 @@
-setwd("~/Documents/GitHub/RProjectsVL/")
-getwd()
+---
+title: "Project 1"
+author: "Vincent Locke"
+date: "3/19/2018"
+output: html_document
+---
+We need to set the directory and load the packages we will need.
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = getwd())
+```
 
-# Remove previous data
-rm(list=ls(all=TRUE))
-
-# Loading packages
+```{r packages, include=FALSE}
 pkgs <- c("scales","car","RColorBrewer",
           "scatterplot3d","plot3D","lattice",
           "dplyr","knitr") 
@@ -12,12 +17,11 @@ for (pkg in pkgs) {
   if (! (pkg %in% rownames(installed.packages()))) { install.packages(pkg) }
   require(pkg, character.only = TRUE)
 }
-
-# Remove pkgs and pkg
 rm(pkgs, pkg)
+```
 
-########## Function obtained from the internet https://github.com/ChrKoenig/R_marginal_plot/blob/master/marginal_plot.R
-####
+This function was obtained from github  https://github.com/ChrKoenig/R_marginal_plot/blob/master/marginal_plot.R
+```{r marginal_plot,echo=FALSE}
 marginal_plot = function(x, y, group = NULL, data = NULL, lm_formula = y ~ x, bw = "nrd0", alpha = 1, plot_legend = T, ...){
   require(scales)
   ###############
@@ -133,64 +137,93 @@ marginal_plot = function(x, y, group = NULL, data = NULL, lm_formula = y ~ x, bw
     par(orig_par)
   })
 }
+```
 
-# Load Bank Dataset
+Load Bank Dataset
+```{r Banking Data, echo=FALSE}
 df.1<-read.table("~/Documents/GitHub/RProjectsVL/Data/P1-4.DAT",
                  col.names = c("Sales","Profits","Assets"))
-# First plot
+```
+
+Create a marginal plot comparing sales vs profits
+```{r First Plot, echo=FALSE}
 marginal_plot(x=df.1$Sales,y=df.1$Profits,
               xlab="Sales",ylab="Profits")
-# This plot shows that there is positive correlation between Sales and Profits with
-# somewhat of a linear relationship, but it can also be said that due to the small sample size,
-# this could be misleading.
+```
 
-# Second plot
+This plot shows that there is positive correlation between Sales and Profits with
+somewhat of a linear relationship, but it can also be said that due to the small sample size this could be misleading.
+
+Create a second marginal plot comparing profits vs assets
+```{r Second Plot, echo=FALSE}
 marginal_plot(x=df.1$Profits,y=df.1$Assets,
               xlab="Profits",ylab="Assets")
+```
 
-# In the second plot, we actually see negative correlation between Profits and Assets.
+In this second marginal plot, we can actually see negative correlation between Profits and Assets.
 
-# Third plot
+Create a third marginal plot comparing sales vs assets
+```{r Third Plot, echo=FALSE}
 marginal_plot(x=df.1$Sales,y=df.1$Assets,
               xlab="Sales",ylab="Assets")
+```
 
-# In the third plot, we can see negative correlation between Sales and Assets.
+In this third marginal plot, similar to the second plot we see negative correlation between Sales and Assets as well.
 
-# Load the Radiotherapy Dataset
+Load the Radiotherapy Dataset
+```{r Radiotherapy Data, echo=FALSE}
 df.2<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-7.DAT",
                  col.names = c("Symptoms","Activity","Sleep","Food",
                                "Appetite","Skin"))
+```
 
-# Marginal Plot for Amount of Activity vs Amount of Sleep
+Create a marginal plot comparing the amount of activity vs amount of sleep
+```{r Fourth Plot, echo=FALSE}
 marginal_plot(x=df.2$Activity,y=df.2$Sleep,xlab="Amount of Activity",ylab="Amount of Sleep")
+```
 
-# For this plot, we can see that there is positive correlation between the amount of activity and the 
-# amount of sleep, but we can also see the presence of possible outliers that shown in the top left corner.
+In this marginal plot, there is positive correlation between the amount of activity and the amount of sleep, but we can also see the presence of possible outliers that are shown in the top left corner.
 
-# Load the National Track Records for Women Dataset
+Load the National Track Records for Women Dataset
+```{r Womens Track Data, echo=FALSE}
 df.3<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-9.dat",header = FALSE,
                  col.names = c("Country", "s100", "s200", "s400","m800","m1500","m3000","Marathon"))
+```
 
-# Convert country to character and use as row name
+Summary of Track Data
+```{r summary,echo=FALSE}
+summary(df.3)
+```
+
+Lets convert the country variable to character format and use this as 
+our row name.
+```{r }
 df.3$Country<-as.character(df.3$Country)
 df.a= df.3[, -1]
+```
 
-# Mean
+Mean of the variables
+```{r }
 X<-apply(df.a,2,mean)
 X
+```
 
-# Variance 
+Variance of the variables
+```{r }
 S<-var(df.a)
 S
+```
 
-# Correlation
+Correlation of the variables
+```{r }
 R<-cor(df.a)
 R
+```
 
-# The results show that there is positive correlation between the groups with the largest
-# coming from races that are similar.
+The results show that there is positive correlation between the groups with the largest coming from races that are similar.
 
-# Convert to Meters Per Second
+Lets convert the distance from Meters to Meters Per Second
+```{r }
 df.b<-df.a
 df.b[,1]<-100/df.b[, 1]
 df.b[,2]<-200/df.b[, 2]
@@ -200,103 +233,148 @@ df.b[,4]<-800/df.b[, 4]
 df.b[,5]<-1500/df.b[, 5]
 df.b[,6]<-3000/df.b[, 6]
 df.b[,7]<-42195/df.b[, 7]
+```
 
-# Mean
+Mean of the variables
+```{r }
 X2<-apply(df.b,2,mean)
 X2
+```
 
-# Variance
+Variance of the variables
+```{r }
 S2<-var(df.b)
 S2
+```
 
-# Correlation
+Correlation of the variables
+```{r }
 R2<-cor(df.b)
 R2
+```
 
-# The results for this problem are similar to our previous question. We see positive
-# correlation between groups with emphasis on the races with similar distances.
+The results are similar to our initial review of the mean, variance, and correlation. There's positive correlation between the groups with emphasis on the races with similar distances.
 
-# Load the Bankruptcy Dataset
+Load the Bankruptcy Dataset
+```{r Bankruptcy Data, echo=FALSE}
 df.4<-read.table("~/Documents/GitHub/RProjectsVL/Data/T11-4.DAT",header = FALSE,
-                 col.names = c("X1CashFlow/TotalDebt","X2NetIncome/TotalAssets",
-                               "X3CurrentAssets/CurrentLiabilites","X4CurrentAssets/NetSales",
-                               "Population"))
+                 col.names = c("X1CashFlow/TotalDebt","X2NetIncome/TotalAssets",  "X3CurrentAssets/CurrentLiabilites","X4CurrentAssets/NetSales","Population"))
+```
 
-# Scatter 3D plot
+Lets create a 3D scatter plot comparing bankruptcy vs nonbankruptcy banks
+```{r scatterplot3d, echo=FALSE}
 scatterplot3d(x=df.4$X3CurrentAssets.CurrentLiabilites,y=df.4$X1CashFlow.TotalDebt,z=df.4$X2NetIncome.TotalAssets,xlab = "CurrentAssets/CurrentLiabilites",
               ylab="CashFlow/TotalDebt",zlab="NetIncome/TotalAssets",color=par("col"),main="3D Scatterplot X2 X3 X1")
+```
 
-# The plot suggests there could be some outliers towards the top right and the plot also
-# looks like a cigar but bent towards the top.
+The 3D scatter plot suggests there could be some outliers towards the top right and the plot also looks like a cigar but bent towards the top, which is a good sign.
 
-# Rearrange Bankruptcy Dataset
-df.5<-data.frame(a=df.4$X3CurrentAssets.CurrentLiabilites,b=df.4$X1CashFlow.TotalDebt,
-                 c=df.4$X2NetIncome.TotalAssets,d=df.4$X4CurrentAssets.NetSales,
-                 e=df.4$Population)
+Now lets rearrange the Bankruptcy Dataset
+```{r rearranged bankruptcy data, echo=FALSE}
+df.5<-data.frame(a=df.4$X3CurrentAssets.CurrentLiabilites,b=df.4$X1CashFlow.TotalDebt,c=df.4$X2NetIncome.TotalAssets,d=df.4$X4CurrentAssets.NetSales,e=df.4$Population)
+```
 
-# Change d to numeric and e to a factor
+Change the d variable to numeric and the e variable to a factor
+```{r }
 df.5$d<-as.numeric(df.5$d)
 df.5$e<-as.factor(df.5$e)
+```
 
-# Second Scatter 3D plot showing Bankruptcy and NonBankruptcy
+Now, lets create a second 3D scatter plot showing bankruptcy and nonbankruptcy
+```{r second scatterplot3d, echo=FALSE}
 df.plot<-scatterplot3d(df.5[df.5$e=="1",],box=FALSE, pch=16,xlab="NetIncome/TotalAssets", ylab="CurrentAssets/CurrentLiabilites",zlab="CashFlow/TotalDebt",zlim=c(-0.5,1),
                        type="h", main="3D Scatterplot X2 X3 X1",
                        xlim = c(0,4),ylim = c(-0.5,1),highlight.3d=TRUE)
 df.plot$points3d(df.5[df.5$e=="0",],col="red",type="h",pch=16)
 legend("topright",legend=c("Non Bankruptcy","Bankruptcy"),col = c("black","red"),lty = 1,box.lty=0,pch=19)
+```
 
-# This plot shows that there is an outlier for the bankruptcy firms, which shows up in the
-# non-bankruptcy firms.
+The 3d scatter plot shows that there probably is an outlier for a bankrupted bank that shows up in the non-bankrupted banks.
 
-# Load the Public Utility Company Dataset
+Load the Public Utility Company Dataset
+```{r Utility Data, echo=FALSE}
 df.6<-read.table("~/Documents/GitHub/RProjectsVL/Data/T12-4.DAT",header = FALSE,
-                 col.names = c("X1FixedChargeRatio","X2RateofReturnonCapital","X3CostPerKWcp",
-                               "X4AnnualLoadFactor","X5PeakDemandGrowth","X6Sales",
-                               "X7PercentNuclear","X8FuelCost","Company"))
-# Create a Star Chart
+                 col.names=c("X1FixedChargeRatio","X2RateofReturnonCapital","X3CostPerKWcp","X4AnnualLoadFactor","X5PeakDemandGrowth","X6Sales","X7PercentNuclear","X8FuelCost","Company"))
+```
+
+Lets create a star chart
+```{r starchart, echo=FALSE}
 par(mfrow=c(2,2))
 stars(df.6[,1:3],locations=c(0,0),key.loc=c(0,0),main="Group 1")
 stars(df.6[,4:6],locations=c(0,0),key.loc=c(0,0),main="Group 2")
 stars(df.6[,5:8],locations=c(0,0),key.loc=c(0,0),main="Group 3")
 stars(df.6[,2:5],locations=c(0,0),key.loc=c(0,0),main="Group 4")
+```
 
-# Reset plot parameters
+Reset the plot parameters back to the default settings
+```{r }
 dev.off()
+```
 
-# Load the National Park Dataset Dataset
+Load the National Park Dataset Dataset
+```{r Park Data, echo=FALSE}
 df.7<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-11.dat",header = FALSE,
                  col.names = c("Size","Visitors"))
+```
 
-# Add a new variable for the parks
+We need to create a new variable that will represent the parks
+```{r new variable, echo=FALSE}
 df.7$Park<-factor(rep(1:length(df.7$Size)))
+```
 
-# plot data
+National Parks
+Arcadia          1
+Bruce Canyon     2
+Cuyahoga Valley  3
+Everglades       4
+Grand Canyon     5
+Grand Teton      6
+Great Smokey     7
+Hot Springs      8
+Olympic          9
+Mount Rainier    10
+Rocky Mountain   11
+Shenandoah       12
+Yellowstone      13
+Yosemite         14
+Zion             15
+
+Create a scatter plot comparing size vs visitors
+```{r Fifth Plot, echo=FALSE}
 plot(x=df.7$Visitors,y=df.7$Size, main="Scatter Plot of X and Y",xlab="Number of visitors(in millions)",ylab="Size (in Acres)")
 abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
+```
 
-# If we take a look at the plot, we can clearly see that there is an outlier that is effecting model. 
-# To figure our which park is the outlier, lets take a look at the data.
+If we take a look at the plot, we can clearly see that there is an outlier that is effecting model. 
+
+To figure our which park is the outlier, lets take a look at the data.
+```{r }
 head(df.7,n=15)
+```
 
-# Comparing the dataset to the plot, we figure out that Park 7 or 
-# The Great Smokey National Park is the outlier.
+Comparing the dataset to the scatter plot, we see that park 7 or The Great Smokey National Park is the outlier.
 
-# Before we do anything, lets check the correlation between Visitors and Size.
+Before we do anything, lets check the correlation between Visitors and Size.
+```{r }
 cor(x=df.7$Visitors,y=df.7$Size)
+```
 
-# It comes out at 0.1725274. So now lets remove The Great Smokey National Park and plot the data and 
-# rerun the cor() to see if it improves.
+It comes out at 0.1725274, which isnt the bet. So lets remove The Great Smokey National Park and plot the data and rerun the cor() to see if it improves correlation between the two.
 
-# Remove The Great Smokey National Park.
+First remove The Great Smokey National Park from the data.
+```{r, echo=FALSE}
 df.7<-df.7[-7,]
+```
 
-# Update scatter plot
+Now lets re-plot the scatter plot
+```{r Sixth Plot, echo=FALSE}
 plot(x=df.7$Visitors,y=df.7$Size, main="Updated Scatter Plot of X and Y",xlab="Number of visitors(in millions)",ylab="Size (in Acres)")
 abline(lm(Size~Visitors,data=df.7),col="blue",lwd=3, lty=3)
+```
 
-# It definitly looks better so now lets also rerun the cor().
+It definitly improves the scatter plot so now lets also check correlation between the two again.
+```{r }
 cor(x=df.7$Visitors,y=df.7$Size)
+```
 
-# The correlation coefficient improves to 0.3907829.
-
-knit()
+The correlation coefficient is 0.3907829, which is definitly an improvement.
