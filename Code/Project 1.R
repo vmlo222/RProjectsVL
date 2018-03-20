@@ -1,8 +1,26 @@
-setwd("~/Documents/GitHub/RProjectsVL/Code")
+setwd("~/Documents/GitHub/RProjectsVL/")
 getwd()
 
 # Remove Previous Data
 rm(list=ls(all=TRUE))
+
+
+pkgs <- c("sp","maps","maptools", "ggthemes", "caret",
+          "prophet", "broom","keras","lime","tidyquant",
+          "recipes","yardstick","corrr","rsample",
+          "reshape2", "ggplot2","lazyeval","corrplot",
+          "purrr", "RColorBrewer", "scales",
+          "data.table", "randomForest","e1071", "ellipse", "RWeka",
+          "gridExtra", "RColorBrewer","plyr",
+          "grid","tibble","tidyr","stringr",
+          "ggfortify","tibble","readr","dplyr",
+          "ggrepel","scales","forcats","lubridate") 
+for (pkg in pkgs) {
+  if (! (pkg %in% rownames(installed.packages()))) { install.packages(pkg) }
+  require(pkg, character.only = TRUE)
+}
+rm(pkgs, pkg)
+
 
 # Loading Packages
 pkgs <- c("scales","car","RColorBrewer",
@@ -261,7 +279,7 @@ stars(df.6[,2:5],locations=c(0,0),key.loc=c(0,0),main="Group 4")
 dev.off()
 
 # Load the National Park Dataset Dataset
-df.7<-read.table("~/Documents/GitHub/RProjectsV/Data/T1-11.dat",header = FALSE,
+df.7<-read.table("~/Documents/GitHub/RProjectsVL/Data/T1-11.dat",header = FALSE,
                  col.names = c("Size","Visitors"))
 
 # Add a new variable for the parks
