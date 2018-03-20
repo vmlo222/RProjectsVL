@@ -1,6 +1,15 @@
 setwd("~/Documents/GitHub/RProjectsVL/")
 getwd()
 
+pkgs <- c("scales","car","RColorBrewer",
+          "scatterplot3d","plot3D","lattice",
+          "dplyr","knitr") 
+for (pkg in pkgs) {
+  if (! (pkg %in% rownames(installed.packages()))) { install.packages(pkg) }
+  require(pkg, character.only = TRUE)
+}
+rm(pkgs, pkg)
+
 # Remove previous data
 rm(list=ls(all=TRUE))
 
